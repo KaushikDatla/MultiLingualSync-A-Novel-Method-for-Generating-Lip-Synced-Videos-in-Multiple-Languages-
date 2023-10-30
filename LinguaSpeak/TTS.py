@@ -1,0 +1,41 @@
+import os
+import azure.cognitiveservices.speech as speechsdk
+
+def text_to_speech(input_file, output_file, region, subscription_key, voice_name):
+    # Read the input text from the file
+    with open(input_file, 'r', encoding='utf-8') as file:
+        text_to_speak = file.read()
+
+    # Set up the Speech Config with the specified region and subscription key
+    speech_config = speechsdk.SpeechConfig(subscription=subscription_key, region=region)
+
+    # Set the voice name based on the selection
+    speech_config.speech_synthesis_voice_name = voice_name
+
+    # Create a synthesizer
+    synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
+
+    # Synthesize the input text to audio
+    result = synthesizer.speak_text_async(text_to_speak).get()
+
+    # Save the audio to the output file
+    with open(output_file, 'wb') as audio_file:
+        audio_file.write(result.audio_data)
+
+    print(f'Text-to-speech successfully generated. Audio saved to "{output_file}".')
+
+
+if __name__ == "__main__":
+    # Replace these values with your Azure Speech Services subscription key and region
+    azure_subscription_key = "e8b272b6028240f1a38929441aeaf615"
+    azure_region = "centralindia"
+    voice_name = 'te-in-MohanNeural'  # Replace with the desired voice name
+
+   
+    # Replace this path with the input text file path
+    input_text_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/translatedText.txt"
+
+    # Specify the desired output audio file path
+    output_audio_file_path = 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/TranslatedAudio.wav'
+    text_to_speech(input_text_path, output_audio_file_path, azure_region, azure_subscription_key, voice_name)
+    

@@ -1,0 +1,31 @@
+from moviepy.editor import VideoFileClip, AudioFileClip
+
+def extract_audio_and_mute_video(input_file, audio_output_file, muted_video_output_file, output_audio_path, output_video_path):
+    # Load the video clip
+    video_clip = VideoFileClip(input_file)
+
+    # Extract audio from the video clip
+    audio_clip = video_clip.audio
+    audio_clip.write_audiofile(audio_output_file)
+
+    # Mute the audio in the video clip
+    muted_video_clip = video_clip.without_audio()
+    muted_video_clip.write_videofile(muted_video_output_file)
+
+    # Move the audio and video files to specified paths
+    import shutil
+    shutil.move(audio_output_file, output_audio_path)
+    shutil.move(muted_video_output_file, output_video_path)
+
+    # Close the video clips
+    audio_clip.close()
+    video_clip.close()
+
+if __name__ == "__main__":
+    input_video_file = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/IPvid.mp4"
+    output_audio_file = "extracted_audio.wav"
+    output_muted_video_file = "muted_video.mp4"
+    output_audio_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/input/extracted_audio.wav"
+    output_video_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/mutedVid.mp4"
+
+    extract_audio_and_mute_video(input_video_file, output_audio_file, output_muted_video_file, output_audio_path, output_video_path)

@@ -1,0 +1,43 @@
+import os
+import azure.cognitiveservices.speech as speechsdk
+
+def speech_to_text_azure(input_audio_path, output_text_path, azure_subscription_key, azure_region):
+    # Create an instance of a speech config with specified subscription key and region
+    speech_config = speechsdk.SpeechConfig(subscription=azure_subscription_key, region=azure_region)
+
+    # Specify the audio input source as a file
+    audio_config = speechsdk.audio.AudioConfig(filename=input_audio_path)
+
+    # Create a speech recognizer with the specified config
+    speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+
+    # Perform speech recognition
+    result = speech_recognizer.recognize_once()
+
+    # Check the result
+    if result.reason == speechsdk.ResultReason.RecognizedSpeech:
+        text_result = result.text
+    elif result.reason == speechsdk.ResultReason.NoMatch:
+        text_result = "No speech could be recognized."
+    elif result.reason == speechsdk.ResultReason.Canceled:
+        text_result = "Speech recognition canceled. Reason: {}".format(result.cancellation_details.reason)
+        print("Error details: {}".format(result.cancellation_details.error_details))
+    else:
+        text_result = "Error occurred during speech recognition: {}".format(result.error_details)
+
+    # Write the result to the output file
+    with open(output_text_path, "w") as output_file:
+        output_file.write(text_result)
+
+if __name__ == "__main__":
+    # Replace these with your actual Azure credentials, audio file path, and output text file path
+    azure_subscription_key = "e8b272b6028240f1a38929441aeaf615"
+    azure_region = "centralindia"
+    input_audio_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/input/extracted_audio.wav"
+    output_text_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/STT.txt"
+
+    if not os.path.isfile(input_audio_path):
+        print("Invalid audio file path.")
+    else:
+        speech_to_text_azure(input_audio_path, output_text_path, azure_subscription_key, azure_region)
+        print("Speech to Text result saved to:", output_text_path)

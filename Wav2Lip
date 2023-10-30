@@ -1,0 +1,41 @@
+import os
+import subprocess
+from IPython.display import HTML
+from base64 import b64encode
+
+
+
+# Get the directory containing the script
+script_directory = 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/'
+
+# Run the inference command
+checkpoint_path ='C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/checkpoints/wav2lip_gan.pth'
+input_video_path ='C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/mutedVid.mp4' 
+input_audio_path ='C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/TranslatedAudio.wav' 
+output_video_path ='C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/output/output_video.mp4'
+
+# Change the current working directory to the script directory
+os.chdir(script_directory)
+
+
+
+# Fixed the checkpoint_path variable and added quotes around paths to handle spaces in the file names
+import subprocess
+
+inference_command = [
+    'python', 'inference.py',
+    '--checkpoint_path', 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/checkpoints/wav2lip_gan.pth',
+    '--face', 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/mutedVid.mp4',
+    '--audio', 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/input/TranslatedAudio.wav',
+    '--outfile', 'C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/output/output_video.mp4',
+    '--resize_factor',str(2),
+]
+
+try:
+    subprocess.run(inference_command, check=True)
+except subprocess.CalledProcessError as e:
+    print("Error:", e)
+
+
+
+

@@ -1,0 +1,18 @@
+from googletrans import Translator
+
+
+def translate_text(input_file, output_file, src_lang, dest_lang):
+    translator = Translator()
+
+    with open(input_file, 'r', encoding='utf-8') as file_in, open(output_file, 'w', encoding='utf-8') as file_out:
+        for line in file_in:
+            translation = translator.translate(line.strip(), src=src_lang, dest=dest_lang)
+            file_out.write(translation.text + '\n')
+
+if __name__ == "__main__":
+    input_file_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/STT.txt"
+    output_file_path = "C:/Users/mural/OneDrive/Desktop/Text-to-speech (2)/Text-to-speech/LinguaSpeak/translatedText.txt"
+    source_language = "en"
+    destination_language = "te"
+
+    translate_text(input_file_path, output_file_path, source_language, destination_language)
